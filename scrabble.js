@@ -57,34 +57,69 @@ Score.prototype.highest = function(arrayOfWords){
 
     // Necessary to be able to use the .score. QUESTION - why is this necessary?
     var item = new Score();
-    if(item.score(arrayOfWords[i]) > score){
-      console.log("ENTERED AND ABOUT TO REseT!");
+
+    // Including word.length != 7 is key here because if word.length == 7 then the original word wins the tie breaker
+    if (item.score(arrayOfWords[i]) == score && arrayOfWords[i].length < word.length && word.length != 7){
+      word = arrayOfWords[i];
+      score = item.score(arrayOfWords[i]);
+    } else if(item.score(arrayOfWords[i]) > score){
+      word = arrayOfWords[i];
+      score = item.score(arrayOfWords[i]);
+    }
+    else if(item.score(arrayOfWords[i]) == score && arrayOfWords[i].length == 7  && word.length !== 7){
       word = arrayOfWords[i];
       score = item.score(arrayOfWords[i]);
     }
   }
 
-  console.log("HIGHESTTT!!");
-  console.log(word);
-  console.log(score);
+  // Note, in the code above, the word is not reset unless everything above applies, meaning if the word is tied and hasnt been broken by another tie braker, then the first of the two words does not reset and that is the word that is returned.
+
+  // console.log(word + ": " + score);
 
   return word;
 };
 
 // YOUR CODE HERE
-Scrabble.prototype.helloWorld = function() {
-  return 'hello world!';
-};
+// Scrabble.prototype.helloWorld = function() {
+//   return 'hello world!';
+// };
 
 module.exports = Scrabble;
 
-console.log("SCORE(WORD) TESTS");
+console.log(">>>>>>>>Test Score");
 
 var sample = new Score();
 console.log("apple: " + sample.score("apple"));
 
+var sample = new Score();
+console.log("aaaaaaa: " + sample.score("aaaaaaa"));
+
+var sample = new Score();
+console.log("qqqqqbf: " + sample.score("qqqqqbf"));
+
+console.log(">>>>>>>>Test Bonus");
 var sample = new Score ();
 console.log("gorilla: " + sample.score("gorilla"));
 
+console.log(">>>>>>>>>>>>Highest Score Test");
+console.log(">>>>>>>>>>>>Positive Test Case");
 var array = new Score ();
 console.log(array.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));
+
+
+console.log(">>>>>>>>>>>>Tie Breaker - first word is returned");
+var array = new Score ();
+console.log(array.highest(["paple", "apple"]));
+
+console.log(">>>>>>>>>>>>Tie Breaker - if 7 letters is used, it win");
+var array = new Score ();
+console.log(array.highest(["aaaaaad", "qqqqqj"]));
+
+console.log(">>>>>>>>>>>>Tie Breaker - if 7 letters is used and played 2nd, it wins");
+var array = new Score ();
+console.log(array.highest(["qqqqqj", "aaaaaad"]));
+
+console.log(">>>>>>>>>>>>Tie Breaker - both words are 7 letters, 1st wins");
+var array = new Score ();
+console.log(array.highest(["aaaaaad", "eeeeeeg"]));
+console.log(array.highest(["eeeeeeg", "aaaaaad"]));

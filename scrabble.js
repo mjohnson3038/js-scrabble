@@ -29,20 +29,46 @@ POINTS = {
 
 var Scrabble = function() {};
 
-var Score = function(word){
-  this._word = word;
+var Score = function(){
 };
 
-Score.prototype.score = function(){
+
+Score.prototype.score = function(word){
   var sum = 0;
   var bonus = 0;
-  var splitToArray = this._word.toUpperCase().split("");
-  console.log(splitToArray);
-  // var arraySymbols = [];
-  for(var i = 0; i < this._word.length; i++){
+  var splitToArray = word.toUpperCase().split("");
+  for(var i = 0; i < word.length; i++){
     sum += (POINTS[splitToArray[i]]);
   }
+  if (word.length == 7){
+    bonus = 50;
+  }
+  sum += bonus;
   return sum;
+};
+
+Score.prototype.highest = function(arrayOfWords){
+
+  // This initializes this function so that there is a base to compare with.
+  var word = "";
+  var score = 0;
+
+  for(var i = 0; i < arrayOfWords.length; i++){
+
+    // Necessary to be able to use the .score. QUESTION - why is this necessary?
+    var item = new Score();
+    if(item.score(arrayOfWords[i]) > score){
+      console.log("ENTERED AND ABOUT TO REseT!");
+      word = arrayOfWords[i];
+      score = item.score(arrayOfWords[i]);
+    }
+  }
+
+  console.log("HIGHESTTT!!");
+  console.log(word);
+  console.log(score);
+
+  return word;
 };
 
 // YOUR CODE HERE
@@ -52,5 +78,13 @@ Scrabble.prototype.helloWorld = function() {
 
 module.exports = Scrabble;
 
-var sample = new Score ("apple");
-console.log(sample.score());
+console.log("SCORE(WORD) TESTS");
+
+var sample = new Score();
+console.log("apple: " + sample.score("apple"));
+
+var sample = new Score ();
+console.log("gorilla: " + sample.score("gorilla"));
+
+var array = new Score ();
+console.log(array.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));

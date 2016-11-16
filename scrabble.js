@@ -88,6 +88,14 @@ Player.prototype.play = function(word){
   this._plays.push(word);
 };
 
+Player.prototype.totalScore = function(){
+  var total = 0;
+  for(var i = 0; i < this._plays.length; i++){
+    total += Score.score(this._plays[i]);
+  }
+  return total;
+};
+
 // YOUR CODE HERE
 // Scrabble.prototype.helloWorld = function() {
 //   return 'hello world!';
@@ -97,8 +105,8 @@ module.exports = Scrabble;
 
 console.log(">>>>>>>>Test Score");
 
-console.log("aaaaaaa: " + Score.score("aaaaaaa"));
-console.log("qqqqqbf: " + Score.score("qqqqqbf"));
+console.log("aaaaaaa should equal 7: " + Score.score("aaaaaaa"));
+console.log("qqqqqbf should equal 107:  " + Score.score("qqqqqbf"));
 
 // var sample = new Score();
 // console.log("apple: " + sample.score("apple"));
@@ -110,7 +118,7 @@ console.log("qqqqqbf: " + Score.score("qqqqqbf"));
 // console.log("qqqqqbf: " + sample.score("qqqqqbf"));
 //
 console.log(">>>>>>>>Test Bonus");
-console.log("gorilla: " + Score.score("gorilla"));
+console.log("gorilla should equal 58: " + Score.score("gorilla"));
 
 // // var sample = new Score ();
 // // console.log("gorilla: " + sample.score("gorilla"));
@@ -118,7 +126,7 @@ console.log("gorilla: " + Score.score("gorilla"));
 console.log(">>>>>>>>>>>>Highest Score Test");
 console.log(">>>>>>>>>>>>Positive Test Case");
 
-console.log(Score.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));
+console.log("should be gorilla: " + Score.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));
 
 // var array = new Score ();
 // console.log(array.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));
@@ -127,36 +135,38 @@ console.log(Score.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));
 console.log(">>>>>>>>>>>>Tie Breaker - first word is returned");
 // var array = new Score ();
 // console.log(array.highest(["paple", "apple"]));
-console.log(Score.highest(["paple", "apple"]));
+console.log("should be paple: " + Score.highest(["paple", "apple"]));
 
 console.log(">>>>>>>>>>>>Tie Breaker - if 7 letters is used, it win");
 // var array = new Score ();
 // console.log(array.highest(["aaaaaad", "qqqqqj"]));
-console.log(Score.highest(["aaaaaad", "qqqqqj"]));
+console.log("should be aaaaaad: " + Score.highest(["aaaaaad", "qqqqqj"]));
 
 console.log(">>>>>>>>>>>>Tie Breaker - if 7 letters is used and played 2nd, it wins");
 // var array = new Score ();
 // console.log(array.highest(["qqqqqj", "aaaaaad"]));
-console.log(Score.highest(["qqqqqj", "aaaaaad"]));
+console.log("should be aaaaaad: " + Score.highest(["qqqqqj", "aaaaaad"]));
 
 
 console.log(">>>>>>>>>>>>Tie Breaker - both words are 7 letters, 1st wins");
 // var array = new Score ();
 // console.log(array.highest(["aaaaaad", "eeeeeeg"]));
 // console.log(array.highest(["eeeeeeg", "aaaaaad"]));
-console.log(Score.highest(["aaaaaad", "eeeeeeg"]));
-console.log(Score.highest(["eeeeeeg", "aaaaaad"]));
+console.log("should be aaaaaad: " + Score.highest(["aaaaaad", "eeeeeeg"]));
+console.log("should be eeeeeeg: " + Score.highest(["eeeeeeg", "aaaaaad"]));
 
 //
 console.log(">>>>>>>>>>>>>>>>>>> Tests player");
 //
 console.log(">>>>>>Request Players Name");
 var playerOne = new Player("Angie");
-console.log(playerOne._name);
-console.log(playerOne._plays);
+console.log("should be Angie: " + playerOne._name);
+console.log("should be nothing yet: " + playerOne._plays);
 //
 console.log(">>>>>>>>>play(word) adds word to plays");
 playerOne.play("vollyba");
 playerOne.play("aaaa");
 playerOne.play("qwewq");
-console.log(playerOne._plays);
+console.log("should be 3 words in an array: " + playerOne._plays);
+
+console.log("should be 98: " + playerOne.totalScore());

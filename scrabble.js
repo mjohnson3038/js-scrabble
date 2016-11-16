@@ -40,11 +40,9 @@ Score.prototype.score = function(){
   console.log(splitToArray);
   // var arraySymbols = [];
   for(var i = 0; i < this._word.length; i++){
-    // arraySymbols.push(Symbol(splitToArray[i]));
-    // POINTS[splitArra]
+    sum += (POINTS[splitToArray[i]]);
   }
-  // 
-  // return arraySymbols;
+  return sum;
 };
 
 // YOUR CODE HERE

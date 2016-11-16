@@ -30,10 +30,10 @@ POINTS = {
 var Scrabble = function() {};
 
 var Score = function(){
+
 };
 
-
-Score.prototype.score = function(word){
+Score.score = function(word){
   var sum = 0;
   var bonus = 0;
   var splitToArray = word.toUpperCase().split("");
@@ -47,7 +47,7 @@ Score.prototype.score = function(word){
   return sum;
 };
 
-Score.prototype.highest = function(arrayOfWords){
+Score.highest = function(arrayOfWords){
 
   // This initializes this function so that there is a base to compare with.
   var word = "";
@@ -56,19 +56,18 @@ Score.prototype.highest = function(arrayOfWords){
   for(var i = 0; i < arrayOfWords.length; i++){
 
     // Necessary to be able to use the .score. QUESTION - why is this necessary?
-    var item = new Score();
+    // var item = new Score(); when it is defined as a prototype
 
     // Including word.length != 7 is key here because if word.length == 7 then the original word wins the tie breaker
-    if (item.score(arrayOfWords[i]) == score && arrayOfWords[i].length < word.length && word.length != 7){
+    if (Score.score(arrayOfWords[i]) == score && arrayOfWords[i].length < word.length && word.length !== 7){
       word = arrayOfWords[i];
-      score = item.score(arrayOfWords[i]);
-    } else if(item.score(arrayOfWords[i]) > score){
+      score = Score.score(arrayOfWords[i]);
+    } else if(Score.score(arrayOfWords[i]) > score){
       word = arrayOfWords[i];
-      score = item.score(arrayOfWords[i]);
-    }
-    else if(item.score(arrayOfWords[i]) == score && arrayOfWords[i].length == 7  && word.length !== 7){
+      score = Score.score(arrayOfWords[i]);
+    } else if(Score.score(arrayOfWords[i]) == score && arrayOfWords[i].length == 7  && word.length !== 7){
       word = arrayOfWords[i];
-      score = item.score(arrayOfWords[i]);
+      score = Score.score(arrayOfWords[i]);
     }
   }
 
@@ -77,6 +76,16 @@ Score.prototype.highest = function(arrayOfWords){
   // console.log(word + ": " + score);
 
   return word;
+};
+
+var Player = function(name){
+  this._name = name;
+  this._plays = [];
+  this._score = new Score();
+};
+
+Player.prototype.play = function(word){
+  this._plays.push(word);
 };
 
 // YOUR CODE HERE
@@ -88,38 +97,66 @@ module.exports = Scrabble;
 
 console.log(">>>>>>>>Test Score");
 
-var sample = new Score();
-console.log("apple: " + sample.score("apple"));
+console.log("aaaaaaa: " + Score.score("aaaaaaa"));
+console.log("qqqqqbf: " + Score.score("qqqqqbf"));
 
-var sample = new Score();
-console.log("aaaaaaa: " + sample.score("aaaaaaa"));
-
-var sample = new Score();
-console.log("qqqqqbf: " + sample.score("qqqqqbf"));
-
+// var sample = new Score();
+// console.log("apple: " + sample.score("apple"));
+//
+// var sample = new Score();
+// console.log("aaaaaaa: " + sample.score("aaaaaaa"));
+//
+// var sample = new Score();
+// console.log("qqqqqbf: " + sample.score("qqqqqbf"));
+//
 console.log(">>>>>>>>Test Bonus");
-var sample = new Score ();
-console.log("gorilla: " + sample.score("gorilla"));
+console.log("gorilla: " + Score.score("gorilla"));
 
+// // var sample = new Score ();
+// // console.log("gorilla: " + sample.score("gorilla"));
+//
 console.log(">>>>>>>>>>>>Highest Score Test");
 console.log(">>>>>>>>>>>>Positive Test Case");
-var array = new Score ();
-console.log(array.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));
 
+console.log(Score.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));
 
+// var array = new Score ();
+// console.log(array.highest(["gorilla", "apple", "qqqq", "epic", "yeeess"]));
+//
+//
 console.log(">>>>>>>>>>>>Tie Breaker - first word is returned");
-var array = new Score ();
-console.log(array.highest(["paple", "apple"]));
+// var array = new Score ();
+// console.log(array.highest(["paple", "apple"]));
+console.log(Score.highest(["paple", "apple"]));
 
 console.log(">>>>>>>>>>>>Tie Breaker - if 7 letters is used, it win");
-var array = new Score ();
-console.log(array.highest(["aaaaaad", "qqqqqj"]));
+// var array = new Score ();
+// console.log(array.highest(["aaaaaad", "qqqqqj"]));
+console.log(Score.highest(["aaaaaad", "qqqqqj"]));
 
 console.log(">>>>>>>>>>>>Tie Breaker - if 7 letters is used and played 2nd, it wins");
-var array = new Score ();
-console.log(array.highest(["qqqqqj", "aaaaaad"]));
+// var array = new Score ();
+// console.log(array.highest(["qqqqqj", "aaaaaad"]));
+console.log(Score.highest(["qqqqqj", "aaaaaad"]));
+
 
 console.log(">>>>>>>>>>>>Tie Breaker - both words are 7 letters, 1st wins");
-var array = new Score ();
-console.log(array.highest(["aaaaaad", "eeeeeeg"]));
-console.log(array.highest(["eeeeeeg", "aaaaaad"]));
+// var array = new Score ();
+// console.log(array.highest(["aaaaaad", "eeeeeeg"]));
+// console.log(array.highest(["eeeeeeg", "aaaaaad"]));
+console.log(Score.highest(["aaaaaad", "eeeeeeg"]));
+console.log(Score.highest(["eeeeeeg", "aaaaaad"]));
+
+//
+console.log(">>>>>>>>>>>>>>>>>>> Tests player");
+//
+console.log(">>>>>>Request Players Name");
+var playerOne = new Player("Angie");
+console.log(playerOne._name);
+console.log(playerOne._plays);
+//
+console.log(">>>>>>>>>play(word) adds word to plays");
+playerOne.play("vollyba");
+playerOne.play("aaaa");
+playerOne.play("qwewq");
+console.log(playerOne._plays);

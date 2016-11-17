@@ -96,7 +96,15 @@ Player.prototype.totalScore = function(){
 };
 
 Player.prototype.hasWon = function(){
-
+  var total = 0;
+  for(var i = 0; i < this._plays.length; i++){
+    total += Score.score(this._plays[i]);
+  }
+  if(total >= 100){
+    return true;
+  } else {
+    return false;
+  }
 };
 
 Player.prototype.highestScoringWord = function(){
@@ -182,6 +190,11 @@ playerOne.play("qwewq");
 console.log("should be 3 words in an array: " + playerOne._plays);
 
 console.log("should be 98: " + playerOne.totalScore());
+
+console.log(">>>>>> Test hasWon()");
+console.log("should be false: " + playerOne.hasWon());
+playerOne.play("aaaa");
+console.log("should be true after another play: " + playerOne.hasWon());
 
 console.log(">>>>>>>>>> Tests Player highestScoringWord()");
 console.log("should be vollyba: " + playerOne.highestScoringWord());

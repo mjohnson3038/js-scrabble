@@ -81,7 +81,6 @@ Score.highest = function(arrayOfWords){
 var Player = function(name){
   this._name = name;
   this._plays = [];
-  this._score = new Score();
 };
 
 Player.prototype.play = function(word){
@@ -94,6 +93,19 @@ Player.prototype.totalScore = function(){
     total += Score.score(this._plays[i]);
   }
   return total;
+};
+
+Player.prototype.hasWon = function(){
+
+};
+
+Player.prototype.highestScoringWord = function(){
+  return Score.highest(this._plays);
+};
+
+Player.prototype.highestWordScore = function(){
+  var word = Score.highest(this._plays);
+  return Score.score(word);
 };
 
 // YOUR CODE HERE
@@ -170,3 +182,9 @@ playerOne.play("qwewq");
 console.log("should be 3 words in an array: " + playerOne._plays);
 
 console.log("should be 98: " + playerOne.totalScore());
+
+console.log(">>>>>>>>>> Tests Player highestScoringWord()");
+console.log("should be vollyba: " + playerOne.highestScoringWord());
+
+console.log(">>>>>>>>>> Tests Player highestWordScore()");
+console.log("should be 65: " + playerOne.highestWordScore());
